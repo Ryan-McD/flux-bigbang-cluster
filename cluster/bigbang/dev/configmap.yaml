@@ -1,0 +1,96 @@
+domain: ${SECRET_DOMAIN}
+
+# Uncomment the following settings if using the AWS RKE2 terraform setup
+# istio:
+#   ingressGateways:
+#     public-ingressgateway:
+#       type: "NodePort"
+#       nodePortBase: 30000
+
+flux:
+  interval: 1m
+  rollback:
+    cleanupOnFail: false
+
+logging:
+  enabled: false
+  values:
+    elasticsearch:
+      master:
+        count: 1
+        persistence:
+          size: 256Mi
+        resources:
+          requests:
+            cpu: 200m
+            memory: 1Gi
+      data:
+        count: 1
+        persistence:
+          size: 256Mi
+        resources:
+          requests:
+            cpu: 200m
+            memory: 1Gi
+    kibana:
+      count: 1
+      resources:
+        requests:
+          cpu: 200m
+          memory: 512Mi
+eckoperator:
+  # -- Toggle deployment of ECK Operator.
+  enabled: false
+
+
+monitoring:
+  enabled: true
+  values:
+    prometheus:
+      prometheusSpec:
+        resources:
+          requests:
+            cpu: 200m
+            memory: 1Gi
+
+fluentbit:
+  enabled: false
+  values:
+    securityContext:
+      privileged: true
+
+gatekeeper:
+  enabled: false
+  values:
+    replicas: 1
+    controllerManager:
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+    audit:
+      resources:
+        requests:
+          cpu: 200m
+          memory: 256Mi
+clusterAuditor:
+  enabled: false
+
+kyverno:
+  enabled: false
+  values:
+    replicaCount: 1
+kyvernopolicies:
+  # -- Toggle deployment of Kyverno policies
+  enabled: false
+kyvernoreporter:
+  # -- Toggle deployment of Kyverno Reporter
+  enabled: false
+
+
+twistlock:
+  enabled: false
+  values:
+    console:
+      persistence:
+        size: 256Mi
