@@ -23,14 +23,14 @@ spec:
       retries: 5
   dependsOn:
     - name: metallb
-      namespace: networking
+      namespace: metallb-system
   values:
     resources:
       - apiVersion: metallb.io/v1beta1
         kind: L2Advertisement
         metadata:
           name: l2-ip
-          namespace: networking
+          namespace: metallb-system
         spec:
           ipAddressPools:
             - default-pool
@@ -39,7 +39,7 @@ spec:
         kind: IPAddressPool
         metadata:
           name: default-pool
-          namespace: networking
+          namespace: metallb-system
         spec:
           addresses:
             - "${METALLB_LB_RANGE}"
